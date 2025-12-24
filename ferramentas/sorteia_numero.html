@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sorteador de Números</title>
+    <title>Sorteador de Números - Sorteios, bingos, festas, confraternizações</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css"></style>
 
@@ -12,7 +12,7 @@
     height: 100px; /* Altura visível de um item ou mais */
     overflow: hidden; /* Oculta os itens fora do contêiner visível */
     border: 2px solid #333;
-    width: 100px;
+    width: 80px;
     margin: 0 auto;
     position: relative;
 }
@@ -54,87 +54,81 @@
 <div class="main-container">
     <div class="container">
         <h1 >🎲 Sorteador de Números</h1>
-        <div class="card">
-            
+                      
+        <!--card config-->
+        <div class="card mb-4">
+            <div class="card-header">
+                💯 Maior número que pode ser sorteado (2 a 9999)
+            </div>
             <div class="card-body">
-                
-                <!--card config-->
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <i class="bi bi-people-fill"></i> Total de Pessoas (2 a 9999)
-                    </div>
-                    <div class="card-body">
-                       <div class="input-group mb-3">
-                            <input type="number" class="form-control" min="2" max="9999" value=10 placeholder="Número de pessoas" aria-label="Recipient’s username" id="totalPessoas">
-                            <button class="btn btn-outline-danger" type="button" onclick="reiniciarSorteio()">Reiniciar Sorteio</button>
-                        </div>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" role="switch" id="input_pode_repetir">
-                            <label class="form-check-label" for="input_pode_repetir">Pode sortear o mesmo número mais de uma vez</label>
-                        </div>
-                    </div>
+                <div class="input-group mb-3">
+                    <input type="number" class="form-control" min="2" max="9999" value=10 placeholder="Número de pessoas" aria-label="Recipient’s username" id="totalPessoas">
+                    <button class="btn btn-outline-danger" type="button" onclick="reiniciarSorteio()">Reiniciar Sorteio</button>
                 </div>
-                
-                <!--roletas-->
-                <div class="card mb-4">
-                    <div class="card-header">
-                        🎰 Roleta
-                    </div>
-                    <div class="card-body">
-                        <!-- Roletas -->
-                        <div class="row justify-content-md-center g-0">
-                            <div class="col">
-                                <div class="slot-container">
-                                    <div class="slot-reel" id="roleta4">
-                                        <!--<div class="slot-item">1</div>-->
-                                    </div>    
-                                </div>  
-                            </div>
-                            <div class="col">
-                                <div class="slot-container">
-                                    <div class="slot-reel" id="roleta3">
-                                        <!--<div class="slot-item">1</div>-->
-                                    </div>    
-                                </div>  
-                            </div>
-                            <div class="col">
-                                <div class="slot-container">
-                                    <div class="slot-reel" id="roleta2">
-                                        <!--<div class="slot-item">1</div>-->
-                                    </div>    
-                                </div>  
-                            </div>
-                            <div class="col">
-                                <div class="slot-container">
-                                    <div class="slot-reel" id="roleta1">
-                                        <!--<div class="slot-item">1</div>-->
-                                    </div>    
-                                </div>  
-                            </div>
-               
-                        </div>
-                        <!--botao sorteio-->
-                        <div class="d-grid gap-2 col-6 mx-auto">
-                            <button class="btn btn-outline-primary btn-lg mt-4" type="button" id="btnSortear" onclick="spinRoulette()">Sortear Novo Número</button>
-                            <span id="msgbox"></span>
-                        </div>
-                    </div>
-                </div>
-                
-                <!--ja sorteados-->
-                <div class="card">
-                    <div class="card-header">
-                        🎲 Números já sorteados
-                    </div>
-                    <div class="card-body">
-                        <ul class="list-group" id="sorteados">
-                            <!--<li class="list-group-item">🏆 An item</li>-->
-                        </ul>
-                    </div>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" id="input_pode_repetir">
+                    <label class="form-check-label" for="input_pode_repetir">Pode sortear o mesmo número mais de uma vez</label>
                 </div>
             </div>
         </div>
         
+        <!--roletas-->
+        <div class="card mb-4">
+            <div class="card-header">
+                🎰 Roleta
+            </div>
+            <div class="card-body">
+                <!-- Roletas -->
+                <div class="row row-cols-4 g-0">
+                    <div class="col">
+                        <div class="slot-container">
+                            <div class="slot-reel" id="roleta4">
+                                <!--<div class="slot-item">1</div>-->
+                            </div>    
+                        </div>  
+                    </div>
+                    <div class="col">
+                        <div class="slot-container">
+                            <div class="slot-reel" id="roleta3">
+                                <!--<div class="slot-item">1</div>-->
+                            </div>    
+                        </div>  
+                    </div>
+                    <div class="col">
+                        <div class="slot-container">
+                            <div class="slot-reel" id="roleta2">
+                                <!--<div class="slot-item">1</div>-->
+                            </div>    
+                        </div>  
+                    </div>
+                    <div class="col">
+                        <div class="slot-container">
+                            <div class="slot-reel" id="roleta1">
+                                <!--<div class="slot-item">1</div>-->
+                            </div>    
+                        </div>  
+                    </div>
+        
+                </div>
+                <!--botao sorteio-->
+                <div class="d-grid gap-2 col-md-6 mx-auto">
+                    <button class="btn btn-outline-primary btn-lg mt-4" type="button" id="btnSortear" onclick="spinRoulette()">Sortear Novo Número</button>
+                    <span id="msgbox"></span>
+                </div>
+            </div>
+        </div>
+        
+        <!--ja sorteados-->
+        <div class="card">
+            <div class="card-header">
+                🎲 Números já sorteados
+            </div>
+            <div class="card-body">
+                <ul class="list-group" id="sorteados">
+                    <!--<li class="list-group-item">🏆 An item</li>-->
+                </ul>
+            </div>
+        </div>
     </div>
 </div>
 <!-- Rodapé -->
@@ -177,7 +171,6 @@ function inicializarRoletas() {
 // iniciar a lista de sorteados
 function iniciarSorteios(){
     pode_repetir = input_pode_repetir.checked;
-    console.log(pode_repetir);
     array_sorteados = [];
     const container = document.getElementById("sorteados");
     container.innerHTML = '<li class="list-group-item">Nenhum sorteio ainda...</li>';
@@ -217,7 +210,7 @@ function spinRoulette() {
     if (input_pode_repetir.checked == false) {
         // nao pode repetir. todos ja foram sorteados?
         if (array_sorteados.length >= input_total_pessoas.value){
-            console.log("Todos os numeros já foram sorteados");
+            //console.log("Todos os numeros já foram sorteados");
             document.getElementById('msgbox').innerHTML = '<div class="alert alert-warning text-center" role="alert">Todos os numeros já foram sorteados!</div>';
             return
         }
