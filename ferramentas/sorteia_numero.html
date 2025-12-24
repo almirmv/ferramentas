@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorteador de Números</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css"></style>
+
+<style>
+.slot-container {
+    height: 100px; /* Altura visível de um item ou mais */
+    overflow: hidden; /* Oculta os itens fora do contêiner visível */
+    border: 2px solid #333;
+    width: 100px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.slot-reel {
+    /* Define a posição inicial dos itens */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    /* Define uma transição padrão, que será ajustada via JS */
+    transition: transform 3s cubic-bezier(0.1, 0.7, 0.1, 1); 
+}
+
+.slot-item {
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    background-color: #1100ff31;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Animação CSS para o loop contínuo (opcional, se quiser um loop infinito antes de parar) */
+@keyframes infinite-spin {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-300px); /* Ajuste com base na altura total dos seus itens repetidos */ }
+}
+
+</style>
+</head>
+<body>
+<ul class="nav nav-underline justify-content-center mb-4">
+  <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">🎲 Sortear Números</a></li>
+  <li class="nav-item"><a class="nav-link disabled" href="#" aria-disabled="true">😍 Sortear Pessoas</a></li>
+  <li class="nav-item"><a class="nav-link disabled" href="#" aria-disabled="true"><i class="bi bi-qr-code"></i> Gerar QrCode</a></li>
+</ul>
+<div class="main-container">
+    <div class="container">
+        <h1 >🎲 Sorteador de Números</h1>
+        <div class="card">
+            
+            <div class="card-body">
+                
+                <!--card config-->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="bi bi-people-fill"></i> Total de Pessoas (2 a 9999)
+                    </div>
+                    <div class="card-body">
+                       <div class="input-group mb-3">
+                            <input type="number" class="form-control" min="2" max="9999" value=10 placeholder="Número de pessoas" aria-label="Recipient’s username" id="totalPessoas">
+                            <button class="btn btn-outline-danger" type="button" onclick="reiniciarSorteio()">Reiniciar Sorteio</button>
+                        </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch" id="input_pode_repetir">
+                            <label class="form-check-label" for="input_pode_repetir">Pode sortear o mesmo número mais de uma vez</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <!--roletas-->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        🎰 Roleta
+                    </div>
+                    <div class="card-body">
+                        <!-- Roletas -->
+                        <div class="row justify-content-md-center g-0">
+                            <div class="col">
+                                <div class="slot-container">
+                                    <div class="slot-reel" id="roleta4">
+                                        <!--<div class="slot-item">1</div>-->
+                                    </div>    
+                                </div>  
+                            </div>
+                            <div class="col">
+                                <div class="slot-container">
+                                    <div class="slot-reel" id="roleta3">
+                                        <!--<div class="slot-item">1</div>-->
+                                    </div>    
+                                </div>  
+                            </div>
+                            <div class="col">
+                                <div class="slot-container">
+                                    <div class="slot-reel" id="roleta2">
+                                        <!--<div class="slot-item">1</div>-->
+                                    </div>    
+                                </div>  
+                            </div>
+                            <div class="col">
+                                <div class="slot-container">
+                                    <div class="slot-reel" id="roleta1">
+                                        <!--<div class="slot-item">1</div>-->
+                                    </div>    
+                                </div>  
+                            </div>
+               
+                        </div>
+                        <!--botao sorteio-->
+                        <div class="d-grid gap-2 col-6 mx-auto">
+                            <button class="btn btn-outline-primary btn-lg mt-4" type="button" id="btnSortear" onclick="spinRoulette()">Sortear Novo Número</button>
+                            <span id="msgbox"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!--ja sorteados-->
+                <div class="card">
+                    <div class="card-header">
+                        🎲 Números já sorteados
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group" id="sorteados">
+                            <!--<li class="list-group-item">🏆 An item</li>-->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+<!-- Rodapé -->
+<ul class="nav justify-content-center">
+  <li class="nav-item">
+    <a href="https://omecatronico.com.br" class="nav-link" target="_blank"><i class="fas fa-blog"></i><span>Blog</span></a>
+  </li>
+  <li class="nav-item">
+     <a href="https://www.linkedin.com/in/almir-ventura/" class="nav-link" target="_blank"><i class="fab fa-linkedin"></i><span>LinkedIn</span></a>
+  </li>
+  <li>
+    <a href="https://almir.dev.br" class="nav-link" target="_blank"> © 2025 - almir.dev.br</a>
+  </li>            
+</ul> 
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+const input_total_pessoas = document.getElementById('totalPessoas');
+const input_pode_repetir = document.getElementById('input_pode_repetir');
+var array_sorteados = [];
+
+
+// iniciar slots da roletas    
+function inicializarRoletas() {
+    for (let i = 1; i <= 4; i++) {
+        const container = document.getElementById(`roleta${i}`);
+        container.innerHTML = '';
+        
+        // gerar de 0 a 9 (3 vezes) para cada slot da roleta
+        for (let j = 0; j < 30; j++) {
+            const div = document.createElement('div');
+            div.className = 'slot-item';
+            div.textContent = j % 10;
+            container.appendChild(div);
+        }
+    }
+}
+
+// iniciar a lista de sorteados
+function iniciarSorteios(){
+    pode_repetir = input_pode_repetir.checked;
+    console.log(pode_repetir);
+    array_sorteados = [];
+    const container = document.getElementById("sorteados");
+    container.innerHTML = '<li class="list-group-item">Nenhum sorteio ainda...</li>';
+}
+
+// reniciar sorteio
+function reiniciarSorteio(){
+    input_total_pessoas.disabled = false;                   // reativar input pessoas
+    input_pode_repetir.disabled = false;                    // reativar input pode repetir
+    document.getElementById('btnSortear').disabled = false; // reativar botão de sortear    
+    document.getElementById('msgbox').innerHTML = '';       // limpar mensagens
+    array_sorteados = [];                                   // limpar array sorteados
+    inicializarRoletas();                       
+    iniciarSorteios();
+}
+
+function primeiroSorteio(){
+    // impedir alterar as regras durante o sorteio
+    input_total_pessoas.disabled = true; // impede alterar numero de pessoas
+    input_pode_repetir.disabled = true;  // impede alterar repetir ou nao
+    document.getElementById("sorteados").innerHTML = ""; //retirar msg de "Nenhum sorteio ainda"
+
+}
+
+// fazer um sorteio
+function spinRoulette() {
+    // bloquear botao para evitar novo sorteios enquanto estiver rodando
+    document.getElementById('btnSortear').disabled = true;
+    // total de pessoas do input
+    totalPessoas = parseInt(input_total_pessoas.value) || 2;            
+    // limitar entre 2 e 9999
+    totalPessoas = Math.min(Math.max(totalPessoas, 2), 9999);
+    input_total_pessoas.value = totalPessoas;
+    // sortear um numero entre 1 e o total de pessoas
+    var numeroSorteio = Math.floor(Math.random() * totalPessoas) + 1;   
+    // pode repetir?
+    if (input_pode_repetir.checked == false) {
+        // nao pode repetir. todos ja foram sorteados?
+        if (array_sorteados.length >= input_total_pessoas.value){
+            console.log("Todos os numeros já foram sorteados");
+            document.getElementById('msgbox').innerHTML = '<div class="alert alert-warning text-center" role="alert">Todos os numeros já foram sorteados!</div>';
+            return
+        }
+        // evitar duplicados
+        while(array_sorteados.includes(numeroSorteio)){
+            var numeroSorteio = Math.floor(Math.random() * totalPessoas) + 1;
+        }
+    }
+    //numero sorteado. Primeiro sorteio?
+    if (array_sorteados.length == 0){
+        primeiroSorteio();
+    }   
+    // adicionar numero sorteado no array de sorteados
+    array_sorteados.push(numeroSorteio);    
+    //console.log(array_sorteados);
+    // extrair unidades, dezenas, centenas e milhares
+    const unidades = numeroSorteio % 10;                    // O resto da divisão por 10 dá as unidades
+    const dezenas = Math.floor(numeroSorteio / 10) % 10;    // Divide por 10, depois pega o resto por 10
+    const centenas = Math.floor(numeroSorteio / 100) % 10;  // Divide por 100, depois pega o resto por 10
+    const milhares = Math.floor(numeroSorteio / 1000);      // Divide por 1000 para obter os milhares
+    var arr = [unidades, dezenas, centenas, milhares];      // array
+
+    for (let i = 1; i <= 4; i++) {        
+        const reel = document.getElementById(`roleta${i}`);
+        const itemHeight = 100;         // Altura de um item em pixels
+        const itemsCount = 30;          // Número total de itens no .slot-reel (incluindo repetições)
+        const targetIndex = arr[i - 1]; //pega a unidade ou dezena...
+
+        // Calcula a posição final de rolagem
+        // Multiplica por um número grande (ex: 10) para garantir várias voltas visíveis antes de parar
+        const finalPosition = -(targetIndex * itemHeight + (itemsCount / 2) * itemHeight * 1);
+        // Remove a transição anterior e define a nova
+        reel.style.transition = 'none';
+        // Move para uma posição "acima" do ponto final para depois animar até lá
+        reel.style.transform = `translateY(${finalPosition}px)`;
+        // Força o navegador a aplicar a mudança de estilo antes da animação começar
+        void reel.offsetWidth;
+        // Aplica a transição e a posição final visível
+        reel.style.transition = 'transform 5s cubic-bezier(0.1, 0.7, 0.1, 1)'; // Efeito de suavização no final
+        // A posição final visível deve ser um múltiplo da altura do item para alinhar corretamente
+        reel.style.transform = `translateY(-${targetIndex * itemHeight}px)`;
+    }
+    
+    // delay para mostrar o resultado na lista de ganhadores
+    setTimeout(() => {
+        const container = document.getElementById("sorteados");        
+        // acrescentar o novo sorteio na lista de ganhadores
+        const div = document.createElement('div');
+        div.className = 'list-group-item';
+        div.textContent = "🏆" + numeroSorteio;
+        container.appendChild(div);        
+        // reativar botao para proximo sorteio
+        document.getElementById('btnSortear').disabled = false;
+    }, 4000); // 4s
+    
+}
+
+// quando carregar a pagina inicializa roletas e lista
+inicializarRoletas();
+iniciarSorteios();
+</script>
+</body>
